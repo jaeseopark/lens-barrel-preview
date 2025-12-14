@@ -79,6 +79,57 @@ function injectStyles(): void {
   const style = document.createElement('style');
   style.id = 'lens-preview-styles';
   style.textContent = `
+    .lens-preview-card-wrapper {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .lens-preview-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .lens-container {
+      flex: 1 1 0%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      z-index: 2;
+    }
+
+    .camera-container {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: visible;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Allow the actual <svg> elements to overflow their containers vertically
+       so camera graphics can extend beyond the container bounds if needed. */
+    .lens-container svg,
+    .camera-container svg {
+      overflow: visible;
+      display: block;
+    }
+
+    .lens-preview-label {
+      height: 20px;
+      line-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
     .lens-preview-grid {
       width: 100%;
       box-sizing: border-box;

@@ -79,25 +79,19 @@ export function createPreviewCard(
     const camTx = (cameraConfig.transform && cameraConfig.transform.translateX) || 0;
     const camTy = (cameraConfig.transform && cameraConfig.transform.translateY) || 0;
 
-    /** Create lens container */
-    const lensContainer = document.createElement('div');
-    lensContainer.className = 'lens-container';
-    // Apply negative translateX and translateY to lens (opposite of camera's transform)
-    // so the lens moves in the opposite direction
-    if (camTx !== 0 || camTy !== 0) {
-        lensContainer.style.transform = `translate(${-camTx}px, ${-camTy}px)`;
-    }
-    // Increase container min-height if lens moves up (negative camTy)
-    // so the lens has room to shift upward
-    if (camTy < 0) {
-        lensContainer.style.minHeight = `${Math.abs(camTy)}px`;
-    }
+
 
     /** Create lens SVG */
     const lensSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     lensSvg.setAttribute('width', renderOptions.cardWidth.toString());
     lensSvg.setAttribute('height', lensSvgHeight.toString());
     lensSvg.setAttribute('viewBox', `0 0 ${renderOptions.cardWidth} ${lensSvgHeight}`);
+
+    // Apply negative translateX and translateY to lens (opposite of camera's transform)
+    // so the lens moves in the opposite direction
+    if (camTx !== 0 || camTy !== 0) {
+        lensSvg.style.transform = `translate(${-camTx}px, ${-camTy}px)`;
+    }
 
     const lensElement = renderLensShapeSVG(
         lens,
@@ -113,6 +107,9 @@ export function createPreviewCard(
         lensSvg.appendChild(lensElement);
     }
 
+    /** Create lens container */
+    const lensContainer = document.createElement('div');
+    lensContainer.className = 'lens-container';
     lensContainer.appendChild(lensSvg);
 
     /** Create camera container */
