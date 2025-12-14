@@ -46,7 +46,7 @@ export function preview({ elementId, camera = {
 
   /** Create preview cards for each lens with normalized height */
   const cards = lenses.map(lens => {
-    return createPreviewCard(lens, enrichedCameraConfig, enrichedRenderOptions, normalizedCardHeight);
+    return createPreviewCard(lens, enrichedCameraConfig, enrichedRenderOptions);
   });
 
   /** Render grid */

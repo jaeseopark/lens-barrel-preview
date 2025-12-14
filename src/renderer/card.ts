@@ -52,14 +52,12 @@ function calculateCameraSvgHeight(cardWidth: number): number {
  * @param lens - Lens configuration
  * @param cameraConfig - Camera configuration
  * @param renderOptions - Rendering options
- * @param cardHeight - Card height in pixels
  * @returns The preview card element
  */
 export function createPreviewCard(
     lens: Lens,
     cameraConfig: Required<CameraConfig>,
     renderOptions: Required<RenderOptions>,
-    cardHeight: number
 ): HTMLElement {
     // Create outer wrapper to enforce overflow clipping at card boundary
     const cardWrapper = document.createElement('div');
