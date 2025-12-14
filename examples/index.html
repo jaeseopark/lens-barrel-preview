@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lens Barrel Preview - Example</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #fafafa;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lens Barrel Preview</h1>
+    <p class="subtitle">Top-down view of camera lenses using SVG</p>
+    
+    <div id="lens-preview"></div>
+  </div>
+
+  <!-- Load the library -->
+  <script src="../dist/lens-barrel-preview.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      LensBarrelPreview.preview({
+        elementId: 'lens-preview',
+        lenses: [
+          { 
+            label: 'Sony FE 50mm f/1.8', 
+            diameter: 68.6, 
+            length: 59.5 
+          },
+          { 
+            label: 'Sony FE 24-70mm f/2.8 GM', 
+            diameter: 87.6, 
+            length: 136 
+          },
+          { 
+            label: 'Sony FE 70-200mm f/2.8 GM OSS', 
+            diameter: 88, 
+            length: 200 
+          },
+          { 
+            label: 'Sony FE 16-35mm f/2.8 GM', 
+            diameter: 88.5, 
+            length: 121.6 
+          },
+          { 
+            label: 'Sony FE 85mm f/1.4 GM', 
+            diameter: 89.5, 
+            length: 107.5 
+          },
+          { 
+            label: 'Sony FE 35mm f/1.4 GM', 
+            diameter: 76, 
+            length: 96 
+          }
+        ],
+        renderOptions: {
+          cardWidth: 150,
+        },
+      });
+    });
+
+  </script>
+</body>
+</html>
