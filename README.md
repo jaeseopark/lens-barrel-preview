@@ -2,6 +2,8 @@
 
 A JavaScript library for rendering top-down camera and lens preview images in the browser using SVG.
 
+![demo](demo.jpg)
+
 ## Installation
 
 ### Via CDN
