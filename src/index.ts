@@ -4,11 +4,7 @@ import { enrichCameraConfig } from './utils';
 
 export type { PreviewArguments, Lens, RenderOptions, Transform } from './types';
 
-/**
- * Main function to render lens preview grid
- * @param args - Preview configuration
- */
-export function preview({ elementId, camera = {
+export const DEFAULT_CAMERA_CONFIG = {
   imageUrl: 'https://cdn.jsdelivr.net/npm/lens-barrel-preview/dist/assets/a7r4-raster.png',
   transform: {
     scale: 1.85,
@@ -20,8 +16,13 @@ export function preview({ elementId, camera = {
     stepLength: 15,
     mountOuterDiameter: 62
   }
-}, lenses, renderOptions = {} }: PreviewArguments): void {
+};
 
+/**
+ * Main function to render lens preview grid
+ * @param args - Preview configuration
+ */
+export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, renderOptions = {} }: PreviewArguments): void {
   /** Validate arguments */
   if (!elementId) {
     throw new Error('elementId is required');
