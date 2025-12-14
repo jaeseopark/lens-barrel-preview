@@ -9,7 +9,7 @@ export type { PreviewArguments, Lens, RenderOptions, Transform } from './types';
  * @param args - Preview configuration
  */
 export function preview({ elementId, camera = {
-  imageUrl: 'https://www.sony.ca/image/a6b5ebcd7a809627413f28afe662a046?fmt=pjpeg&wid=1014&hei=396&bgcolor=f5f5f5&bgc=f5f5f5',
+  imageUrl: 'https://cdn.jsdelivr.net/npm/lens-barrel-preview/dist/assets/a7r4-raster.png',
   transform: {
     scale: 2.25,
     translateX: 13.5,
