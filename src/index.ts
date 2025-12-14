@@ -11,9 +11,9 @@ export type { PreviewArguments, Lens, RenderOptions, Transform } from './types';
 export function preview({ elementId, camera = {
   imageUrl: 'https://cdn.jsdelivr.net/npm/lens-barrel-preview/dist/assets/a7r4-raster.png',
   transform: {
-    scale: 2.25,
+    scale: 1.85,
     translateX: 13.5,
-    translateY: 24,
+    translateY: 15,
   },
   mountSpec: {
     stepDistance: 10,
