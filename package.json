@@ -1,18 +1,18 @@
 {
   "name": "lens-barrel-preview",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A TypeScript library for rendering top-down camera and lens preview images using SVG",
-  "main": "dist/lens-barrel-preview.js",
-  "module": "dist/lens-barrel-preview.esm.js",
-  "unpkg": "dist/lens-barrel-preview.min.js",
+  "main": "dist/lens-barrel-preview.min.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc && rollup -c",
-    "dev": "rollup -c -w",
-    "dev:ts": "tsc -w",
+    "build": "webpack --mode production",
+    "clean": "rm -rf dist",
+    "dev": "webpack --mode development --watch",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,17 +26,21 @@
     "typescript"
   ],
   "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaeseopark/lens-barrel-preview"
+  },
+  "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/plugin-typescript": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "copy-webpack-plugin": "^12.0.0",
     "eslint": "^8.0.0",
-    "rollup": "^4.0.0",
-    "rollup-plugin-copy": "^3.5.0",
-    "tslib": "^2.6.0",
-    "typescript": "^5.0.0"
+    "prettier": "^3.0.0",
+    "ts-loader": "^9.4.0",
+    "typescript": "^5.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
   }
 }

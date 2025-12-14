@@ -1,0 +1,51 @@
+name: Publish Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: write # Required to upload to releases
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        registry-url: 'https://registry.npmjs.org'
+        cache: 'npm'
+
+    # Ensure npm 11.5.1 or later is installed
+    - name: Update npm
+      run: npm install -g npm@latest
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Publish to NPM
+      run: |
+        TAG_VERSION="${GITHUB_REF#refs/tags/}"
+        TAG_VERSION="${TAG_VERSION#v}"
+        npm version "$TAG_VERSION" --no-git-tag-version
+        if [[ "$TAG_VERSION" == *-* ]]; then
+          npm publish --access public --tag next
+        else
+          npm publish --access public
+        fi
+
+    - name: Upload browser build to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./dist/lens-barrel-preview.min.js
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
