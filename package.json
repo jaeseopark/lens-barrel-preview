@@ -1,6 +1,6 @@
 {
   "name": "lens-barrel-preview",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A TypeScript library for rendering top-down camera and lens preview images using SVG",
   "main": "dist/lens-barrel-preview.min.js",
   "types": "dist/index.d.ts",
