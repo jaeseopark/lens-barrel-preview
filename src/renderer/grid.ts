@@ -89,6 +89,7 @@ function injectStyles(): void {
       flex-direction: column;
       height: 100%;
       overflow: visible;
+      box-sizing: border-box;
     }
 
     .lens-container {
@@ -126,25 +127,15 @@ function injectStyles(): void {
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: center;
-      font-size: 12px;
-      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-top: 10px;
     }
 
     .lens-preview-grid {
       width: 100%;
       box-sizing: border-box;
-    }
-
-    .lens-preview-card {
-      box-sizing: border-box;
-    }
-
-    .lens-preview-label {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-      text-align: center;
     }
   `;
 

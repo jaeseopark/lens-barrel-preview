@@ -141,10 +141,16 @@ export function createPreviewCard(
 
     /** Add label if provided */
     if (lens.label) {
-        const label = document.createElement('div');
+        const labelContainer = document.createElement('div');
+        labelContainer.className = 'lens-preview-label-container';
+        labelContainer.style.width = `${renderOptions.cardWidth - 30}px`; // Account for card padding
+
+        const label = document.createElement('span');
         label.className = 'lens-preview-label';
         label.textContent = lens.label;
-        card.appendChild(label);
+
+        labelContainer.appendChild(label);
+        card.appendChild(labelContainer);
     }
 
     cardWrapper.appendChild(card);
