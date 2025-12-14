@@ -19,8 +19,6 @@ npm install lens-barrel-preview
 ## Usage
 
 ```html
-<div id="lens-preview"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/lens-barrel-preview/dist/lens-barrel-preview.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -34,6 +32,10 @@ npm install lens-barrel-preview
     });
   });
 </script>
+
+...
+
+<div id="lens-preview"></div>
 ```
 
 ## API
@@ -57,41 +59,6 @@ Renders a grid of lens preview images.
   - `length` (number, required): Lens length in mm
 - `renderOptions` (object, optional): Rendering options
   - `cardWidth` (number): Width of each preview card in pixels
-
-## Features
-
-- **SVG-based rendering** for crisp, scalable graphics at any size
-- **Automatic scaling** to fit lens elements within display bounds
-- **DOM integration** with inspectable and styleable elements
-- **Responsive design** that works on all screen sizes
-
-## Development
-
-This project is written in TypeScript.
-
-```bash
-# Install dependencies
-npm install
-
-# Build the library (compiles TypeScript and bundles)
-npm run build
-
-# Development mode with file watching and auto-rebuild
-npm run dev
-
-# TypeScript watch mode only
-npm run dev:ts
-
-# Lint TypeScript files
-npm run lint
-
-# Lint and auto-fix issues
-npm run lint:fix
-
-# Start local development server (recommended)
-npx http-server . -p 8000
-# Then open: http://localhost:8000/examples/index.html
-```
 
 ## License
 
