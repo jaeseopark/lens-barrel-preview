@@ -1,0 +1,2 @@
+- **`index.html`** — A minimal example demonstrating basic usage of the library.
+- **`table.html`** — An example HTML table showing how to use `previewWithTableData()`.
