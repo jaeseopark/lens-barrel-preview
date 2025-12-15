@@ -12,12 +12,5 @@ export const BUMP_TRANSITION_MM = 5;
 
 /** Default number of small bumps (visible transitions) to render along the barrel */
 export const DEFAULT_BUMP_COUNT = 2;
-
-/**
- * Default intensity for the initial bump as a fraction of full diameter (0..1).
- * E.g., 0.95 means the first visible bump will be 95% of the final diameter.
- */
-export const INITIAL_STEP_INTENSITY = 0.95;
-
 /** Fraction (0..1) of full diameter used immediately after the mount step (e.g. 0.9 = 90%) */
-export const INITIAL_STEP_PERCENT = 0.9;
+export const INITIAL_STEP_DIAMETER_FRACTION = 0.9;
