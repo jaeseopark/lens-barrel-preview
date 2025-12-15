@@ -73,12 +73,12 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
  *
  * @param args - Preview configuration excluding the lenses property (automatically extracted from table)
  */
-const previewWithTableData = (args: Omit<PreviewArguments, 'lenses'>) => {
+export function previewWithTableData(args: Omit<PreviewArguments, 'lenses'>): void {
   preview({
     ...args,
     lenses: getLensesFromFirstQualifyingTable,
   });
-};
+}
 
 /** Export for UMD build */
 export default { preview, previewWithTableData };
