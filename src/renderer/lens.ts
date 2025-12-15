@@ -1,5 +1,5 @@
 import type { Lens, Point } from '../types';
-import { BUMP_TRANSITION_MM, DEFAULT_BUMP_COUNT, INITIAL_STEP_DIAMETER_FRACTION } from './constants';
+import { BUMP_TRANSITION_MM, DEFAULT_BUMP_COUNT, INITIAL_STEP_DIAMETER_FRACTION, BUMP_SIZE_THRESHOLD_RATIO } from './constants';
 
 const bumpCount: number = DEFAULT_BUMP_COUNT;
 
@@ -55,16 +55,18 @@ export function calculateLensPolygon(
     // Start at back left (mount), go counter-clockwise
     points.push({ x: centerX - minRadius, y: backY });
 
+    const applyBumps = diameter >= mountSpec.mountOuterDiameter * BUMP_SIZE_THRESHOLD_RATIO;
+    
     // Initial step: mount diameter to INITIAL_STEP_DIAMETER_FRACTION of lens diameter.
     // Dividnig by 2 because the amount is split between left and right sides.
-    const initialStepRadius = (INITIAL_STEP_DIAMETER_FRACTION * diameterPx) / 2;
+    const initialStepRadius = (applyBumps ? INITIAL_STEP_DIAMETER_FRACTION * diameterPx : diameterPx) / 2;
     points.push({ x: centerX - minRadius, y: stepStartY });
 
     // Build a flexible bump profile: N bumps evenly spaced over the remaining length
     const remainingLength = lengthPx - (stepDistancePx + stepLengthPx);
     let profile: { radius: number; y: number }[] = [];
     if (remainingLength > 0) {
-      const effectiveBumpCount = Math.max(1, Math.floor(bumpCount || DEFAULT_BUMP_COUNT));
+      const effectiveBumpCount = applyBumps ? Math.max(1, Math.floor(bumpCount || DEFAULT_BUMP_COUNT)) : 0;
       const segmentLength = remainingLength / (effectiveBumpCount + 1);
       const desiredTransitionPx = BUMP_TRANSITION_MM * lensScale;
       // Cap the bump transition length to at most half the segment length to
