@@ -55,12 +55,17 @@ Renders a grid of lens preview images.
     - `scale` (number): Scale factor
     - `translateX` (number): Horizontal translation in pixels
     - `translateY` (number): Vertical translation in pixels
+  - `mountSpec` (object, required): Mount specifications for lens stepping
+    - `stepDistance` (number): Distance from mount flange where stepping begins (mm)
+    - `stepLength` (number): Length over which stepping transition occurs gradually (mm)
+    - `mountOuterDiameter` (number): Minimum diameter before requiring stepping (mm)
 - `lenses` (array, required): Array of lens objects
   - `label` (string, optional): Display label for the lens
   - `diameter` (number, required): Lens diameter in mm
   - `length` (number, required): Lens length in mm
 - `renderOptions` (object, optional): Rendering options
   - `cardWidth` (number): Width of each preview card in pixels
+  - `lensScale` (number): Scale factor for lens rendering
 
 ## License
 
