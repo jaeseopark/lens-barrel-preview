@@ -14,11 +14,13 @@ export interface Lens {
   diameter: number;
   length: number;
   label?: string;
+  tags?: string[];
 }
 
 export interface RenderOptions {
   cardWidth: number;
   lensScale: number;
+  backgroundColorMapping?: Record<string, string>;
 }
 
 export interface PreviewArguments {

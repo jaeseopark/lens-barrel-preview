@@ -20,3 +20,5 @@ export const INITIAL_STEP_DIAMETER_FRACTION = 0.9;
  * If lens diameter < (mountOuterDiameter * BUMP_SIZE_THRESHOLD_RATIO) then bumps are skipped.
  */
 export const BUMP_SIZE_THRESHOLD_RATIO = 1.3;
+
+export const DEFAULT_BACKGROUND_COLOR = '#f5f5f5';

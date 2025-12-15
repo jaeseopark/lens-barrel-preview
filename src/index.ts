@@ -1,6 +1,7 @@
-import { createPreviewCard, calculateNormalizedCardHeight, createGrid, enrichRenderOptions } from './renderer';
+import { createGrid } from './renderer';
+import { enrichCameraConfig } from './utils';
 import type { PreviewArguments } from './types';
-import { enrichCameraConfig, getLensesFromFirstQualifyingTable } from './utils';
+import { getLensesFromFirstQualifyingTable } from './utils';
 
 export type { PreviewArguments, Lens, RenderOptions, Transform } from './types';
 
@@ -41,20 +42,8 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
     throw new Error(`Element with id "${elementId}" not found`);
   }
 
-  /** Enrich render options with defaults */
-  const enrichedCameraConfig = enrichCameraConfig(camera)
-  const enrichedRenderOptions = enrichRenderOptions(renderOptions);
-
-  /** Calculate normalized card height based on longest lens */
-  const normalizedCardHeight = calculateNormalizedCardHeight(resolvedLenses, enrichedRenderOptions);
-
-  /** Create preview cards for each lens with normalized height */
-  const cards = resolvedLenses.map(lens => {
-    return createPreviewCard(lens, enrichedCameraConfig, enrichedRenderOptions);
-  });
-
-  /** Render grid */
-  createGrid(container, cards, enrichedRenderOptions, normalizedCardHeight);
+  const enrichedCameraConfig = enrichCameraConfig(camera);
+  createGrid(container, resolvedLenses, enrichedCameraConfig, renderOptions);
 }
 
 /**
@@ -73,9 +62,20 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
  *
  * @param args - Preview configuration excluding the lenses property (automatically extracted from table)
  */
-export function previewWithTableData(args: Omit<PreviewArguments, 'lenses'>): void {
+export function previewWithTableData({ renderOptions, ...rest }: Omit<PreviewArguments, 'lenses'>): void {
+  const { backgroundColorMapping = {}, ...restRenderOptions } = renderOptions || {};
   preview({
-    ...args,
+    ...rest,
+    renderOptions: {
+      ...restRenderOptions,
+      backgroundColorMapping: {
+        ...backgroundColorMapping,
+        owned: '#d1e7dd', // Light green for owned lenses
+        decommissioned: '#f8d7da', // Light red for unowned lenses
+        shortlisted: '#cfe2ff', // Light blue for shortlisted lenses
+        outgoing: '#fff3cd', // Light yellow for outgoing lenses
+      },
+    },
     lenses: getLensesFromFirstQualifyingTable,
   });
 }

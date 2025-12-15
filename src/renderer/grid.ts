@@ -1,5 +1,9 @@
-import type { RenderOptions } from '../types';
+import type { RenderOptions, Lens, CameraConfig } from '../types';
+import { createPreviewCard, calculateNormalizedCardHeight } from './card';
+import { enrichRenderOptions } from './utils';
+// Camera config enrichment is expected to be handled by the caller (upstream).
 import { DEFAULT_CARD_WIDTH } from './constants';
+import { getBackgroundColor } from './utils';
 
 /**
  * Create and render a grid of preview cards
@@ -10,10 +14,15 @@ import { DEFAULT_CARD_WIDTH } from './constants';
  */
 export function createGrid(
   container: HTMLElement,
-  cards: HTMLElement[],
-  renderOptions: Required<RenderOptions>,
-  cardHeight: number
+  lenses: Lens[],
+  /** Enriched camera config (see `enrichCameraConfig`) */
+  camera: Required<CameraConfig>,
+  renderOptions: Partial<RenderOptions> = {}
 ): void {
+  // Camera must already be enriched by the caller so we don't mutate or
+  // duplicate enrichment here. Render options are still enriched locally.
+  const enrichedRenderOptions = enrichRenderOptions(renderOptions);
+  const cardHeight = calculateNormalizedCardHeight(lenses, enrichedRenderOptions);
   /** Clear existing content */
   container.innerHTML = '';
 
@@ -22,11 +31,12 @@ export function createGrid(
   grid.className = 'lens-preview-grid';
 
   /** Apply grid styles */
-  applyGridStyles(grid, renderOptions);
+  applyGridStyles(grid, enrichedRenderOptions);
 
-  /** Append all cards */
-  cards.forEach(card => {
-    applyCardStyles(card, renderOptions, cardHeight);
+  /** Create and append cards for each lens so we can access lens data here */
+  lenses.forEach(lens => {
+    const card = createPreviewCard(lens, camera, enrichedRenderOptions);
+    applyCardStyles(card, enrichedRenderOptions, cardHeight, lens.tags);
     grid.appendChild(card);
   });
 
@@ -54,12 +64,12 @@ function applyGridStyles(grid: HTMLElement, renderOptions: RenderOptions): void 
  * @param renderOptions - Rendering options
  * @param cardHeight - Height for the card
  */
-function applyCardStyles(card: HTMLElement, renderOptions: RenderOptions, cardHeight: number): void {
+function applyCardStyles(card: HTMLElement, renderOptions: Required<RenderOptions>, cardHeight: number, tags?: string[]): void {
   card.style.display = 'flex';
   card.style.flexDirection = 'column';
   card.style.alignItems = 'center';
   card.style.padding = '15px';
-  card.style.backgroundColor = '#f5f5f5';
+  card.style.backgroundColor = getBackgroundColor(renderOptions, tags ?? []);
   card.style.borderRadius = '8px';
   card.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
 

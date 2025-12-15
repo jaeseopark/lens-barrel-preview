@@ -32,6 +32,7 @@ export const enrichCameraConfig = ({
  * Automatically detects and parses lens data from a table that meets these requirements:
  * - Must contain columns with headers starting with "diameter" and "length" (case insensitive)
  * - May include an optional third column for lens labels (headers like "model", "name", etc.)
+ * - May include an optional column for ownership/owner (headers like "owner", "ownership", "owned") which will be returned as lowercase `tags`
  * - Column order is flexible - the function identifies columns by their headers
  *
  * @returns Array of lens objects extracted from the first qualifying table
@@ -43,6 +44,7 @@ export function getLensesFromFirstQualifyingTable(): Lens[] {
     let diameterIndex = -1;
     let lengthIndex = -1;
     let labelIndex = -1;
+    let ownershipIndex = -1;
 
     // Find the first qualifying table
     for (const table of allTables) {
@@ -58,12 +60,16 @@ export function getLensesFromFirstQualifyingTable(): Lens[] {
         const foundLabelIndex = headers.findIndex(h =>
             h.startsWith('model') || h.startsWith('name') || h.startsWith('label')
         );
+        const foundOwnershipIndex = headers.findIndex(h =>
+            h.startsWith('owner') || h.startsWith('ownership') || h.startsWith('owned')
+        );
 
         if (foundDiameterIndex !== -1 && foundLengthIndex !== -1) {
             qualifyingTable = table;
             diameterIndex = foundDiameterIndex;
             lengthIndex = foundLengthIndex;
             labelIndex = foundLabelIndex;
+            ownershipIndex = foundOwnershipIndex;
             break;
         }
     }
@@ -77,12 +83,25 @@ export function getLensesFromFirstQualifyingTable(): Lens[] {
         const diameter = parseFloat(cells[diameterIndex]?.textContent?.trim() || '0');
         const length = parseFloat(cells[lengthIndex]?.textContent?.trim() || '0');
         const label = labelIndex !== -1 ? cells[labelIndex]?.textContent?.trim() || undefined : undefined;
+        // Extract ownership information and convert to tags (optional). Values are case-insensitive.
+        // Allows multiple owners separated by comma, semicolon, pipe, or slash.
+        let tags: string[] = [];
+        if (ownershipIndex !== -1) {
+            const raw = cells[ownershipIndex]?.textContent?.trim();
+            if (raw) {
+                tags = raw
+                    .split(/[,;|\/]/)
+                    .map(s => s.trim().toLowerCase())
+                    .filter(Boolean);
+                tags = Array.from(new Set(tags)); // dedup
+            }
+        }
 
         if (isNaN(diameter) || isNaN(length)) {
             throw new Error('Invalid lens data in table. Diameter and length must be valid numbers.');
         }
 
-        return { diameter, length, label };
+        return { diameter, length, label, tags };
     });
 
     return lenses;
