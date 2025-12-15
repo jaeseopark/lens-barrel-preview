@@ -23,7 +23,7 @@ export interface RenderOptions {
 
 export interface PreviewArguments {
   elementId: string;
-  lenses: Lens[];
+  lenses: Lens[] | (() => Lens[]);
   camera?: CameraConfig;
   renderOptions?: Partial<RenderOptions>;
 }

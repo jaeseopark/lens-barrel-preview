@@ -59,7 +59,7 @@ Renders a grid of lens preview images.
     - `stepDistance` (number): Distance from mount flange where stepping begins (mm)
     - `stepLength` (number): Length over which stepping transition occurs gradually (mm)
     - `mountOuterDiameter` (number): Minimum diameter before requiring stepping (mm)
-- `lenses` (array, required): Array of lens objects
+- `lenses` (array or function, required): Array of lens objects or function that returns such an array.
   - `label` (string, optional): Display label for the lens
   - `diameter` (number, required): Lens diameter in mm
   - `length` (number, required): Lens length in mm

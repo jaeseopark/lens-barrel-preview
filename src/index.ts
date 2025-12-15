@@ -1,6 +1,6 @@
 import { createPreviewCard, calculateNormalizedCardHeight, createGrid, enrichRenderOptions } from './renderer';
 import type { PreviewArguments } from './types';
-import { enrichCameraConfig } from './utils';
+import { enrichCameraConfig, getLensesFromFirstQualifyingTable } from './utils';
 
 export type { PreviewArguments, Lens, RenderOptions, Transform } from './types';
 
@@ -28,7 +28,10 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
     throw new Error('elementId is required');
   }
 
-  if (!lenses || !Array.isArray(lenses) || lenses.length === 0) {
+  /** Resolve lenses - call function if provided, otherwise use array directly */
+  const resolvedLenses = typeof lenses === 'function' ? lenses() : lenses;
+
+  if (!resolvedLenses || !Array.isArray(resolvedLenses) || resolvedLenses.length === 0) {
     throw new Error('lenses array is required and must not be empty');
   }
 
@@ -43,10 +46,10 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
   const enrichedRenderOptions = enrichRenderOptions(renderOptions);
 
   /** Calculate normalized card height based on longest lens */
-  const normalizedCardHeight = calculateNormalizedCardHeight(lenses, enrichedRenderOptions);
+  const normalizedCardHeight = calculateNormalizedCardHeight(resolvedLenses, enrichedRenderOptions);
 
   /** Create preview cards for each lens with normalized height */
-  const cards = lenses.map(lens => {
+  const cards = resolvedLenses.map(lens => {
     return createPreviewCard(lens, enrichedCameraConfig, enrichedRenderOptions);
   });
 
@@ -54,5 +57,28 @@ export function preview({ elementId, camera = DEFAULT_CAMERA_CONFIG, lenses, ren
   createGrid(container, cards, enrichedRenderOptions, normalizedCardHeight);
 }
 
+/**
+ * Renders lens previews by extracting data from the first qualifying HTML table in the document.
+ *
+ * Automatically detects and parses lens data from a table that meets these requirements:
+ * - Must contain columns with headers starting with "diameter" and "length" (case insensitive)
+ * - May include an optional third column for lens labels (headers like "model", "name", etc.)
+ * - Column order is flexible - the function identifies columns by their headers
+ *
+ * Table structure example:
+ * | Diameter (mm) | Length (mm) | Model          |
+ * |---------------|-------------|----------------|
+ * | 62           | 70         | 50mm f/1.8    |
+ * | 88           | 136        | 24-70mm f/2.8 |
+ *
+ * @param args - Preview configuration excluding the lenses property (automatically extracted from table)
+ */
+export function previewWithTableData(args: Omit<PreviewArguments, 'lenses'>): void {
+  preview({
+    ...args,
+    lenses: getLensesFromFirstQualifyingTable,
+  });
+}
+
 /** Export for UMD build */
-export default { preview };
+export default { preview, previewWithTableData };
