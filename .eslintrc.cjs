@@ -12,7 +12,8 @@ module.exports = {
   },
   rules: {
     // TypeScript specific rules
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    // Strictly disallow unused variables and imports. Keep args starting with _ ignored.
+    '@typescript-eslint/no-unused-vars': ['error', { vars: 'all', args: 'after-used', argsIgnorePattern: '^_', ignoreRestSiblings: false }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
